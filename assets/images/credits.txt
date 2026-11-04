@@ -1,0 +1,19 @@
+Image and brand notes
+=====================
+
+The bundled illustrative photographs were downloaded from Unsplash's image CDN and are stock/illustrative imagery, not verified documentation of YPP programs. The Unsplash License is available at https://unsplash.com/license. The original source photo IDs are listed below; verify each page's current license and metadata before reuse.
+
+hero-community.jpg — Unsplash photo-1529390079861-591de354faf5
+about-youth.jpg — Unsplash photo-1529156069898-49953e39b3ac
+project-dialogue.jpg — Unsplash photo-1511632765486-a01980e01a18
+project-education.jpg — Unsplash photo-1509062522246-3755977927d7
+news-community.jpg — Unsplash photo-1517486808906-6ca8b3f04846
+gallery-01.jpg — Unsplash photo-1529156069898-49953e39b3ac
+gallery-02.jpg — Unsplash photo-1511895426328-dc8714191300
+gallery-03.jpg — Unsplash photo-1521412644187-c49fa049e84d
+
+The supplied ypp-logo.png is used as the YPP brand mark. Verify the organization's current asset and permission policies before adapting or redistributing it.
+
+No testimonial portrait, partner logo, impact total, or result is preloaded. Website uploads require configured S3-compatible storage; published content is stored in MySQL through native mysql2 queries.
+
+aniso-hussein-ali.jpeg — Portrait supplied with the project files. It is not included in the database seed or the public gallery.

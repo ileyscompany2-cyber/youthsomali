@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties ─────────────────────────────────── */
+:root {
+  --color-forest:    #123D35;
+  --color-emerald:   #16765A;
+  --color-gold:      #D9A441;
+  --color-surface:   #F5F7F5;
+  --color-ink:       #17211D;
+  --color-ink-muted: #718078;
+  --color-border:    #E1E8E2;
+  --color-card:      #FFFFFF;
+  --sidebar-width:   260px;
+  --topnav-height:   64px;
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  --color-forest:    #0D2E27;
+  --color-emerald:   #16765A;
+  --color-surface:   #101A16;
+  --color-ink:       #E8F0E9;
+  --color-ink-muted: #8FA89A;
+  --color-border:    #243B2F;
+  --color-card:      #1A2820;
+}
+
+/* ─── Base Resets ────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-surface text-ink antialiased;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  line-height: 1.6;
+  min-height: 100dvh;
+}
+
+/* ─── Scrollbar Styling ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { @apply bg-surface; }
+::-webkit-scrollbar-thumb { @apply bg-border rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-ink-muted; }
+
+/* ─── Focus Styles ───────────────────────────────────────────── */
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-emerald-ypp rounded;
+}
+
+/* ─── Typography ─────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-semibold text-ink leading-tight;
+}
+
+p { @apply text-ink-muted leading-relaxed; }
+
+a { @apply transition-colors duration-150; }
+
+/* ─── Component Layer ────────────────────────────────────────── */
+@layer components {
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-xl
+           px-4 py-2.5 text-sm transition-all duration-200 cursor-pointer select-none
+           focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-forest text-white hover:bg-forest-light
+           focus-visible:ring-forest active:scale-[0.98];
+  }
+  .btn-gold {
+    @apply btn bg-gold text-white hover:bg-gold-dark
+           focus-visible:ring-gold active:scale-[0.98];
+  }
+  .btn-outline {
+    @apply btn border border-border bg-transparent text-ink
+           hover:bg-surface-muted focus-visible:ring-forest active:scale-[0.98];
+  }
+  .btn-danger {
+    @apply btn bg-danger text-white hover:bg-red-700
+           focus-visible:ring-danger active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply btn text-ink-muted hover:bg-surface-muted hover:text-ink
+           focus-visible:ring-forest active:scale-[0.98];
+  }
+  .btn-sm { @apply text-xs px-3 py-1.5 rounded-lg; }
+  .btn-lg { @apply text-base px-6 py-3 rounded-2xl; }
+
+  /* Cards */
+  .card {
+    @apply bg-white dark:bg-surface-card-dark rounded-2xl shadow-card
+           border border-border dark:border-border-dark p-6 transition-shadow duration-200;
+  }
+  .card-hover {
+    @apply card hover:shadow-card-hover cursor-pointer;
+  }
+
+  /* Form Controls */
+  .form-label {
+    @apply block text-sm font-medium text-ink mb-1.5;
+  }
+  .form-input {
+    @apply w-full rounded-xl border border-border bg-white dark:bg-surface-card-dark
+           text-ink placeholder:text-ink-muted px-4 py-2.5 text-sm
+           transition-all duration-150 focus:outline-none
+           focus:ring-2 focus:ring-forest focus:border-forest
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .form-select {
+    @apply form-input appearance-none cursor-pointer;
+  }
+  .form-textarea {
+    @apply form-input resize-y min-h-[120px];
+  }
+  .form-error { @apply text-xs text-danger mt-1; }
+  .form-hint  { @apply text-xs text-ink-muted mt-1; }
+  .required-star { @apply text-danger ml-0.5; }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  .badge-green  { @apply badge bg-surface-muted text-forest; }
+  .badge-gold   { @apply badge bg-gold-bg text-gold-dark; }
+  .badge-gray   { @apply badge bg-border text-ink-muted; }
+  .badge-red    { @apply badge bg-red-50 text-danger; }
+  .badge-blue   { @apply badge bg-blue-50 text-info; }
+
+  /* Status badges */
+  .status-published { @apply badge-green; }
+  .status-draft     { @apply badge-gray; }
+  .status-archived  { @apply badge-red; }
+  .status-unread    { @apply badge-blue; }
+  .status-read      { @apply badge-green; }
+  .status-replied   { @apply badge-gray; }
+
+  /* Skeleton loading */
+  .skeleton {
+    @apply rounded-lg animate-pulse bg-gradient-to-r
+           from-surface via-border to-surface;
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+  }
+
+  /* Section headings */
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-ink;
+  }
+  .section-subtitle {
+    @apply text-lg text-ink-muted mt-3 max-w-2xl;
+  }
+  .section-tag {
+    @apply inline-block text-xs font-semibold tracking-widest uppercase
+           text-gold bg-gold-bg px-3 py-1 rounded-full mb-4;
+  }
+}
+
+/* ─── Utility Layer ──────────────────────────────────────────── */
+@layer utilities {
+  .glass {
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  }
+  .text-balance { text-wrap: balance; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .transition-height {
+    transition: max-height var(--transition-base), opacity var(--transition-base);
+  }
+}
+
+/* ─── Admin Sidebar ──────────────────────────────────────────── */
+.admin-sidebar {
+  width: var(--sidebar-width);
+  transition: transform var(--transition-base), width var(--transition-base);
+}
+
+.admin-sidebar.collapsed {
+  width: 72px;
+}
+
+/* ─── Prose styles for article content ───────────────────────── */
+.prose-ypp {
+  @apply text-ink;
+}
+.prose-ypp h1, .prose-ypp h2, .prose-ypp h3 {
+  @apply text-ink font-bold mt-8 mb-4;
+}
+.prose-ypp p { @apply text-ink-muted mb-4 leading-relaxed; }
+.prose-ypp ul, .prose-ypp ol { @apply pl-6 mb-4 text-ink-muted; }
+.prose-ypp li { @apply mb-2; }
+.prose-ypp a { @apply text-forest underline hover:text-forest-light; }
+.prose-ypp blockquote {
+  @apply border-l-4 border-gold pl-4 italic text-ink-muted my-6;
+}
+.prose-ypp img { @apply rounded-2xl my-6 w-full; }
+
+/* ─── Print ─────────────────────────────────────────────────── */
+@media print {
+  .no-print { display: none !important; }
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
