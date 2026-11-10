@@ -6,5 +6,11 @@ coverage/
 .env
 .env.*
 !.env.example
-uploads/
+/uploads/
 *.log
+dist/
+.netlify/
+.local-backups/
+*.local-tmp
+.tools/
+.local-users.json

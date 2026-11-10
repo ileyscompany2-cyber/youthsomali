@@ -1,0 +1,523 @@
+{
+    "version":  1,
+    "sections":  {
+                     "home":  [
+                                  {
+                                      "id":  "home_1",
+                                      "type":  "image",
+                                      "label":  "Section image",
+                                      "value":  "Photos/1F6A1056.jpg"
+                                  },
+                                  {
+                                      "id":  "home_2",
+                                      "type":  "text",
+                                      "label":  "Youth for Peace and Prosperous · Somalia",
+                                      "value":  "Youth for Peace and Prosperous · Somalia"
+                                  },
+                                  {
+                                      "id":  "home_3",
+                                      "type":  "text",
+                                      "label":  "Young people shaping a more peaceful and prosperous future",
+                                      "value":  "Young people shaping a more peaceful and prosperous future"
+                                  },
+                                  {
+                                      "id":  "home_4",
+                                      "type":  "text",
+                                      "label":  "Empower young people and communities through peacebuilding, leadership, capacity development, and in",
+                                      "value":  "Empower young people and communities through peacebuilding, leadership, capacity development, and inclusive initiatives."
+                                  },
+                                  {
+                                      "id":  "home_5",
+                                      "type":  "text",
+                                      "label":  "Southwest State of Somalia and Mogadishu, Somalia",
+                                      "value":  "Southwest State of Somalia and Mogadishu, Somalia"
+                                  },
+                                  {
+                                      "label":  "Primary button text",
+                                      "value":  "Explore our programs",
+                                      "id":  "hero_primary_text",
+                                      "type":  "text"
+                                  },
+                                  {
+                                      "label":  "Primary button destination",
+                                      "value":  "#programs",
+                                      "id":  "hero_primary_href",
+                                      "type":  "text"
+                                  },
+                                  {
+                                      "label":  "Secondary button text",
+                                      "value":  "Work with YPP",
+                                      "id":  "hero_secondary_text",
+                                      "type":  "text"
+                                  },
+                                  {
+                                      "label":  "Secondary button destination",
+                                      "value":  "#contact",
+                                      "id":  "hero_secondary_href",
+                                      "type":  "text"
+                                  },
+                                  {
+                                      "label":  "Established date",
+                                      "value":  "5 February 2017",
+                                      "id":  "home_established",
+                                      "type":  "text"
+                                  },
+                                  {
+                                      "label":  "Facts strip program count",
+                                      "value":  "7",
+                                      "id":  "home_program_count",
+                                      "type":  "text"
+                                  },
+                                  {
+                                      "label":  "Where we work",
+                                      "value":  "Southwest State \u0026 Mogadishu",
+                                      "id":  "home_work_area",
+                                      "type":  "text"
+                                  }
+                              ],
+                     "about":  [
+                                   {
+                                       "id":  "about_1",
+                                       "type":  "text",
+                                       "label":  "About YPP",
+                                       "value":  "About YPP"
+                                   },
+                                   {
+                                       "id":  "about_2",
+                                       "type":  "text",
+                                       "label":  "Rooted in community, led by youth",
+                                       "value":  "Rooted in community, led by youth"
+                                   },
+                                   {
+                                       "id":  "about_3",
+                                       "type":  "text",
+                                       "label":  "Peacebuilding shaped by young people and their communities.",
+                                       "value":  "Peacebuilding shaped by young people and their communities."
+                                   },
+                                   {
+                                       "id":  "about_4",
+                                       "type":  "text",
+                                       "label":  "Established on 5 February 2017, Youth for Peace and Prosperous works in Southwest State of Somalia a",
+                                       "value":  "Established on 5 February 2017, Youth for Peace and Prosperous works in Southwest State of Somalia and Mogadishu. We bring young people and communities into peacebuilding, leadership, capacity development, and inclusive initiatives."
+                                   },
+                                   {
+                                       "id":  "about_5",
+                                       "type":  "text",
+                                       "label":  "YPP works alongside youth, women, vulnerable communities, persons with disabilities, and internally ",
+                                       "value":  "YPP works alongside youth, women, vulnerable communities, persons with disabilities, and internally displaced people. Our approach values participation, inclusion, dialogue, and locally grounded solutions."
+                                   },
+                                   {
+                                       "id":  "about_6",
+                                       "type":  "text",
+                                       "label":  "Our mission",
+                                       "value":  "Our mission"
+                                   },
+                                   {
+                                       "id":  "about_7",
+                                       "type":  "text",
+                                       "label":  "Empower young people and communities through peacebuilding, leadership, capacity development, and in",
+                                       "value":  "Empower young people and communities through peacebuilding, leadership, capacity development, and inclusive initiatives."
+                                   },
+                                   {
+                                       "id":  "about_8",
+                                       "type":  "text",
+                                       "label":  "Our vision",
+                                       "value":  "Our vision"
+                                   },
+                                   {
+                                       "id":  "about_9",
+                                       "type":  "text",
+                                       "label":  "A peaceful, inclusive, and prosperous society where young people actively contribute to peacebuildin",
+                                       "value":  "A peaceful, inclusive, and prosperous society where young people actively contribute to peacebuilding and sustainable development."
+                                   },
+                                   {
+                                       "id":  "about_10",
+                                       "type":  "text",
+                                       "label":  "Our values",
+                                       "value":  "Our values"
+                                   },
+                                   {
+                                       "id":  "about_11",
+                                       "type":  "text",
+                                       "label":  "Peace and non-violence; youth leadership and participation; inclusion and equality; accountability a",
+                                       "value":  "Peace and non-violence; youth leadership and participation; inclusion and equality; accountability and transparency; community ownership; and human dignity."
+                                   },
+                                   {
+                                       "id":  "about_12",
+                                       "type":  "image",
+                                       "label":  "Young people and community members at a YPP gathering",
+                                       "value":  "Photos/1F6A1054.jpg"
+                                   },
+                                   {
+                                       "id":  "about_13",
+                                       "type":  "text",
+                                       "label":  "Youth leadership and community action",
+                                       "value":  "Youth leadership and community action"
+                                   },
+                                   {
+                                       "label":  "Executive Director name",
+                                       "value":  "Ibrahim Aden Ali",
+                                       "id":  "director_name",
+                                       "type":  "text"
+                                   },
+                                   {
+                                       "label":  "Executive Director title",
+                                       "value":  "Executive Director",
+                                       "id":  "director_title",
+                                       "type":  "text"
+                                   }
+                               ],
+                     "programs":  [
+                                      {
+                                          "id":  "programs_1",
+                                          "type":  "text",
+                                          "label":  "What we do",
+                                          "value":  "What we do"
+                                      },
+                                      {
+                                          "id":  "programs_2",
+                                          "type":  "text",
+                                          "label":  "Our programs",
+                                          "value":  "Our programs"
+                                      },
+                                      {
+                                          "id":  "programs_3",
+                                          "type":  "text",
+                                          "label":  "6 program areas focused on peacebuilding, youth participation, and inclusive community development.",
+                                          "value":  "6 program areas focused on peacebuilding, youth participation, and inclusive community development."
+                                      }
+                                  ],
+                     "events":  [
+                                    {
+                                        "id":  "events_1",
+                                        "type":  "text",
+                                        "label":  "Join us",
+                                        "value":  "Join us"
+                                    },
+                                    {
+                                        "id":  "events_2",
+                                        "type":  "text",
+                                        "label":  "Upcoming event",
+                                        "value":  "Upcoming event"
+                                    },
+                                    {
+                                        "id":  "events_3",
+                                        "type":  "text",
+                                        "label":  "Connect with YPP and our community through peacebuilding and youth-led activities.",
+                                        "value":  "Connect with YPP and our community through peacebuilding and youth-led activities."
+                                    }
+                                ],
+                     "gallery":  [
+                                     {
+                                         "id":  "gallery_1",
+                                         "type":  "text",
+                                         "label":  "In pictures",
+                                         "value":  "In pictures"
+                                     },
+                                     {
+                                         "id":  "gallery_2",
+                                         "type":  "text",
+                                         "label":  "Moments from our community",
+                                         "value":  "Moments from our community"
+                                     },
+                                     {
+                                         "id":  "gallery_3",
+                                         "type":  "text",
+                                         "label":  "These photographs highlight YPP\u0027s work to strengthen youth leadership, peacebuilding, and community ",
+                                         "value":  "These photographs highlight YPP\u0027s work to strengthen youth leadership, peacebuilding, and community collaboration. They reflect the importance of participation and partnership in building a peaceful, inclusive society."
+                                     }
+                                 ],
+                     "team":  [
+                                  {
+                                      "id":  "team_1",
+                                      "type":  "text",
+                                      "label":  "People behind the work",
+                                      "value":  "People behind the work"
+                                  },
+                                  {
+                                      "id":  "team_2",
+                                      "type":  "text",
+                                      "label":  "Our team",
+                                      "value":  "Our team"
+                                  },
+                                  {
+                                      "id":  "team_3",
+                                      "type":  "text",
+                                      "label":  "Meet the people working with communities through YPP.",
+                                      "value":  "Meet the people working with communities through YPP."
+                                  },
+                                  {
+                                      "id":  "team_4",
+                                      "type":  "image",
+                                      "label":  "Young people and community members at a YPP gathering",
+                                      "value":  "Photos/1F6A1054.jpg"
+                                  }
+                              ],
+                     "contact":  [
+                                     {
+                                         "id":  "contact_1",
+                                         "type":  "text",
+                                         "label":  "Get in touch",
+                                         "value":  "Get in touch"
+                                     },
+                                     {
+                                         "id":  "contact_2",
+                                         "type":  "text",
+                                         "label":  "Contact YPP",
+                                         "value":  "Contact YPP"
+                                     },
+                                     {
+                                         "id":  "contact_3",
+                                         "type":  "text",
+                                         "label":  "Learn about our work or discuss a partnership.",
+                                         "value":  "Learn about our work or discuss a partnership."
+                                     },
+                                     {
+                                         "id":  "contact_4",
+                                         "type":  "text",
+                                         "label":  "Reach our team",
+                                         "value":  "Reach our team"
+                                     },
+                                     {
+                                         "id":  "contact_5",
+                                         "type":  "text",
+                                         "label":  "Southwest State of Somalia and Mogadishu, Somalia",
+                                         "value":  "Southwest State of Somalia and Mogadishu, Somalia"
+                                     },
+                                     {
+                                         "id":  "contact_6",
+                                         "type":  "text",
+                                         "label":  "Executive Director: Ibrahim Aden Ali",
+                                         "value":  "Executive Director: Ibrahim Aden Ali"
+                                     },
+                                     {
+                                         "id":  "contact_7",
+                                         "type":  "text",
+                                         "label":  "Fill in the form to open an email to YPP. Your message is not stored on this website.",
+                                         "value":  "Fill in the form to open an email to YPP. Your message is not stored on this website."
+                                     },
+                                     {
+                                         "label":  "Organization email",
+                                         "value":  "info@youthpp.org",
+                                         "id":  "contact_email",
+                                         "type":  "text"
+                                     },
+                                     {
+                                         "label":  "Organization telephone",
+                                         "value":  "+252617367348",
+                                         "id":  "contact_phone",
+                                         "type":  "text"
+                                     },
+                                     {
+                                         "label":  "Top bar location",
+                                         "value":  "Southwest State of Somalia and Mogadishu, Somalia",
+                                         "id":  "contact_top_location",
+                                         "type":  "text"
+                                     }
+                                 ],
+                     "news":  [
+
+                              ],
+                     "projects":  [
+
+                                  ],
+                     "pages":  [
+
+                               ],
+                     "settings":  [
+                                      {
+                                          "label":  "Browser page title",
+                                          "value":  "Youth for Peace and Prosperous | YPP Somalia",
+                                          "id":  "site_title",
+                                          "type":  "text"
+                                      },
+                                      {
+                                          "label":  "Search description",
+                                          "value":  "Youth for Peace and Prosperous supports peacebuilding, youth leadership and inclusive community development in Somalia.",
+                                          "id":  "site_description",
+                                          "type":  "text"
+                                      },
+                                      {
+                                          "label":  "Website logo",
+                                          "value":  "assets/images/ypp-logo.png",
+                                          "id":  "site_logo",
+                                          "type":  "image"
+                                      },
+                                      {
+                                          "label":  "Footer copyright",
+                                          "value":  "© 2026 Youth for Peace and Prosperous. All rights reserved.",
+                                          "id":  "site_footer",
+                                          "type":  "text"
+                                      },
+                                      {
+                                          "label":  "Navigation contact button",
+                                          "value":  "Contact YPP",
+                                          "id":  "contact_button_text",
+                                          "type":  "text"
+                                      },
+                                      {
+                                          "label":  "Navigation contact destination",
+                                          "value":  "#contact",
+                                          "id":  "contact_button_href",
+                                          "type":  "text"
+                                      },
+                                      {
+                                          "label":  "Call to action heading",
+                                          "value":  "Join efforts for peace and inclusive development",
+                                          "id":  "cta_title",
+                                          "type":  "text"
+                                      },
+                                      {
+                                          "label":  "Call to action description",
+                                          "value":  "Connect with YPP to learn about our work or discuss a partnership.",
+                                          "id":  "cta_description",
+                                          "type":  "text"
+                                      }
+                                  ]
+                 },
+    "collections":  {
+                        "programs":  [
+                                         {
+                                             "title":  "Community Peace Forums",
+                                             "description":  "Community forums focused on dialogue, peacebuilding, and participation.",
+                                             "id":  "program_3",
+                                             "image":  "assets/images/about-youth.jpg"
+                                         },
+                                         {
+                                             "title":  "Youth Forums on Peace and Security",
+                                             "description":  "Forums for young people to engage with peace and security issues.",
+                                             "id":  "program_6",
+                                             "image":  "assets/images/gallery-02.jpg"
+                                         },
+                                         {
+                                             "title":  "Sports for Peace and Development",
+                                             "description":  "Sports activities as an approach to peacebuilding and community development.",
+                                             "id":  "program_9",
+                                             "image":  "assets/images/gallery-03.jpg"
+                                         },
+                                         {
+                                             "title":  "Peace Education in Schools",
+                                             "description":  "Peace education activities for school communities.",
+                                             "id":  "program_12",
+                                             "image":  "assets/images/project-education.jpg"
+                                         },
+                                         {
+                                             "title":  "Conflict Prevention and Resolution",
+                                             "description":  "Initiatives focused on preventing and resolving conflict.",
+                                             "id":  "program_15",
+                                             "image":  "assets/images/project-dialogue.jpg"
+                                         },
+                                         {
+                                             "title":  "Youth Leadership and Participation in Peacebuilding",
+                                             "description":  "Youth leadership and participation in peacebuilding.",
+                                             "id":  "program_18",
+                                             "image":  "assets/images/news-community.jpg"
+                                         }
+                                     ],
+                        "events":  [
+                                       {
+                                           "id":  "event_initial",
+                                           "description":  "Join young people and community members for a gathering focused on dialogue, peace, and community collaboration.",
+                                           "location":  "",
+                                           "date":  "To be announced.",
+                                           "image":  "Photos/1F6A0935.jpg",
+                                           "title":  "YPP Community Peacebuilding Gathering",
+                                           "published":  true
+                                       }
+                                   ],
+                        "gallery":  [
+                                        {
+                                            "caption":  "Youth leading community peacebuilding",
+                                            "group":  "YPP and the community",
+                                            "alt":  "YPP activities and community participation",
+                                            "id":  "gallery_record_1",
+                                            "image":  "Photos/IMG_9341.jpg"
+                                        },
+                                        {
+                                            "caption":  "Working together to strengthen community participation",
+                                            "group":  "YPP and the community",
+                                            "alt":  "YPP working in partnership with the community",
+                                            "id":  "gallery_record_2",
+                                            "image":  "Photos/IMG_9342.jpg"
+                                        },
+                                        {
+                                            "caption":  "Partnership for peace and progress",
+                                            "group":  "YPP and the community",
+                                            "alt":  "YPP and community initiatives",
+                                            "id":  "gallery_record_3",
+                                            "image":  "Photos/IMG_9343.jpg"
+                                        },
+                                        {
+                                            "caption":  "Youth and communities united for progress",
+                                            "group":  "YPP and the community",
+                                            "alt":  "Youth and community participation",
+                                            "id":  "gallery_record_4",
+                                            "image":  "Photos/IMG_9344.jpg"
+                                        }
+                                    ],
+                        "team":  [
+                                     {
+                                         "position":  "Executive Director",
+                                         "name":  "Ibrahim Aden Ali",
+                                         "id":  "member_4",
+                                         "image":  "assets/images/ibrahim-aden-ali.png"
+                                     },
+                                     {
+                                         "position":  "Project Coordinator",
+                                         "name":  "Sharif Aymoy Abdinoor",
+                                         "id":  "member_7",
+                                         "image":  "assets/images/sharif-aymoy-abdinoor.png"
+                                     },
+                                     {
+                                         "position":  "Monitoring and Evaluation (M\u0026E) Officer",
+                                         "name":  "Hussein Mohamed Ibrahim",
+                                         "id":  "member_10",
+                                         "image":  "assets/images/hussein-mohamed-ibrahim.png"
+                                     },
+                                     {
+                                         "position":  "Operation and Finance Technical Advisor",
+                                         "name":  "Peter Oire Gutuma",
+                                         "id":  "member_13",
+                                         "image":  "assets/images/peter-oire-gutuma.png"
+                                     },
+                                     {
+                                         "position":  "Admin \u0026 Human Resources Officer",
+                                         "name":  "Aniso Hussein Ali",
+                                         "id":  "member_16",
+                                         "image":  "assets/images/aniso-hussein-ali.jpeg"
+                                     }
+                                 ],
+                        "navigation":  [
+                                           {
+                                               "label":  "About",
+                                               "href":  "#about",
+                                               "id":  "nav_about"
+                                           },
+                                           {
+                                               "label":  "Programs",
+                                               "href":  "#programs",
+                                               "id":  "nav_programs"
+                                           },
+                                           {
+                                               "label":  "Events",
+                                               "href":  "#events",
+                                               "id":  "nav_events"
+                                           },
+                                           {
+                                               "label":  "Gallery",
+                                               "href":  "#gallery",
+                                               "id":  "nav_gallery"
+                                           },
+                                           {
+                                               "label":  "Our team",
+                                               "href":  "#team",
+                                               "id":  "nav_team"
+                                           },
+                                           {
+                                               "label":  "Contact",
+                                               "href":  "#contact",
+                                               "id":  "nav_contact"
+                                           }
+                                       ]
+                    }
+}

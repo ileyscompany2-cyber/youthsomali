@@ -4,13 +4,13 @@ DirectoryIndex index.html
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    RewriteRule ^(php|database|scripts|src|Testimonials|uploads|node_modules|vendor|\.next)(/|$) - [F,L,NC]
+    RewriteRule ^(php|database|scripts|src|Testimonials|uploads|node_modules|vendor|netlify|tests|\.tools|\.local-backups|\.netlify|\.next)(/|$) - [F,L,NC]
     RewriteRule ^\.env(\..*)?$ - [F,L,NC]
     RewriteRule ^\.git(/|$) - [F,L,NC]
     RewriteRule ^(database\.sql|composer\.(json|lock)|router\.php)$ - [F,L,NC]
 </IfModule>
 
-<FilesMatch "^\.(env|git)">
+<FilesMatch "^\.">
     Require all denied
 </FilesMatch>
 
@@ -19,5 +19,9 @@ DirectoryIndex index.html
 </FilesMatch>
 
 <FilesMatch "\.(?i:sql|md|log|ini|conf|dist|lock)$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "(?i:\.(mjs|ps1|toml)$|^package(-lock)?\.json$)">
     Require all denied
 </FilesMatch>

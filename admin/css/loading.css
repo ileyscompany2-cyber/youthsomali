@@ -1,0 +1,4 @@
+.signin[aria-busy="true"]>i{display:none}
+.signin[aria-busy="true"]::after{content:"";width:18px;height:18px;border:2px solid #ffffff60;border-top-color:#fff;border-radius:50%;animation:sign-in-spin .8s linear infinite}
+@keyframes sign-in-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.signin[aria-busy="true"]::after{animation:none}}
