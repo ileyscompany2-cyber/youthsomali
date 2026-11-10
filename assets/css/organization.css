@@ -1,0 +1,33 @@
+/* Reference layout: director, four primary departments, three support teams.
+   Connector lines are decorative; headings and lists carry the hierarchy. */
+.organization-section{background:#fff;color:#151515}
+.org-chart{--org-line:#102c98;max-width:1100px;margin:auto;font-family:Arial,sans-serif}
+.org-chart>h2{width:fit-content;max-width:100%;margin:0 auto 12px;padding:10px 38px;border-radius:23px;background:#08258c;color:#fff;text-align:center;font-size:clamp(24px,3.3vw,44px);font-weight:800;line-height:1.2;letter-spacing:0}
+.org-director{position:relative;width:44%;max-width:440px;margin:0 auto 50px;border:3px solid var(--org-line);border-radius:16px;background:#d7f4fb;text-align:center}
+.org-director:after{content:"";position:absolute;left:50%;top:100%;height:26px;border-left:3px solid var(--org-line)}
+.org-director h3{display:flex;align-items:center;justify-content:center;gap:14px;margin:0;padding:9px 12px;border-radius:10px 10px 7px 7px;background:#08258c;color:white;font-size:clamp(18px,2.3vw,30px);line-height:1.2}
+.org-director svg{width:38px;height:38px;flex-shrink:0}
+.org-director p{margin:0;padding:8px 6px;color:#142b87;font-size:clamp(12px,1.4vw,17px);line-height:1.3}
+.org-departments{position:relative;display:grid;gap:16px}
+.org-primary{grid-template-columns:repeat(4,minmax(0,1fr))}
+.org-departments:before{content:"";position:absolute;left:12.5%;right:12.5%;top:-30px;border-top:3px solid var(--org-line)}
+.org-card{--dept:#087c32;--tint:#effbe9;position:relative;border:3px solid var(--dept);border-radius:15px;background:var(--tint)}
+.org-card:before{content:"";position:absolute;bottom:100%;left:50%;height:30px;border-left:3px solid var(--org-line)}
+.org-card-head{position:relative;display:flex;align-items:center;justify-content:center;min-height:82px;padding:26px 6px 8px;border-radius:10px 10px 6px 6px;background:var(--dept);text-align:center;color:white}
+.org-card h4{margin:0;color:inherit;font:700 clamp(13px,1.5vw,18px)/1.08 Arial,sans-serif}
+.org-icon{position:absolute;top:-20px;left:50%;transform:translateX(-50%);display:grid;place-items:center;width:48px;height:48px;border:2px solid #fff;border-radius:50%;background:var(--dept);color:#fff}
+.org-icon svg{width:30px;height:30px}
+.org-card ul{margin:0;padding:12px 10px 12px 28px;font-size:clamp(12px,1.25vw,16px);line-height:1.25}
+.org-card li+li{margin-top:5px}
+.org-meal{--dept:#5900bf;--tint:#f5edff}
+.org-finance{--dept:#e74e00;--tint:#fff1e3}
+.org-peace{--dept:#00919c;--tint:#edfcfb}
+.org-communications{--dept:#e50079;--tint:#ffeaf4}
+.org-logistics{--dept:#108300;--tint:#eefbe5}
+.org-volunteers{--dept:#0754dc;--tint:#dcf4ff}
+.org-support{grid-template-columns:repeat(3,minmax(0,1fr));width:76%;margin:48px 0 0 3%}
+.org-support:before{left:16.666%;right:-6%;top:-28px}
+.org-support:after{content:"";position:absolute;left:61.84%;bottom:calc(100% + 25px);height:24px;border-left:3px solid var(--org-line)}
+/* Reflow the chart into readable cards on small screens rather than shrinking text. */
+@media(max-width:760px){.org-chart>h2{padding:12px 20px;border-radius:18px}.org-director{width:85%;margin-bottom:48px}.org-primary,.org-support{grid-template-columns:repeat(2,minmax(0,1fr));gap:44px 16px;width:100%;margin-left:0}.org-support{margin-top:44px}.org-departments:before,.org-support:after{display:none}.org-card:before{height:22px}.org-card-head{min-height:88px}.org-card h4{font-size:16px}.org-card ul{font-size:14px;padding-bottom:16px}.org-icon{width:44px;height:44px}.org-volunteers{grid-column:1/-1;width:calc(50% - 8px);justify-self:center}}
+@media(max-width:430px){.org-primary,.org-support{grid-template-columns:1fr}.org-volunteers{grid-column:auto;width:auto;justify-self:stretch}.org-card-head{min-height:80px}.org-card h4{font-size:18px}.org-card ul{font-size:16px}.org-director{width:100%}}
