@@ -120,7 +120,7 @@ img { max-width: 100%; }
 .team-member-grid { align-items: stretch; }
 .team-member-grid .content-card { border-color: #e3eaf1; border-radius: 14px; box-shadow: 0 8px 22px rgba(34,58,87,.06); }
 .team-member-grid .content-card-body { height: 100%; padding: 20px; }
-.team-member-photo,.team-member-photo-placeholder { display: grid; width: 100%; height: 210px; place-items: center; margin-bottom: 16px; border-radius: 10px; background: #f3f6f9; object-fit: cover; object-position: center 25%; }
+.team-member-grid .team-member-photo,.team-member-grid .team-member-photo-placeholder { display: grid; width: min(100%, 220px); height: auto; aspect-ratio: 7 / 9; place-items: center; margin: 0 auto 16px; border-radius: 10px; background: #f3f6f9; object-fit: cover; object-position: center 22%; }
 .team-member-photo-placeholder { background: linear-gradient(145deg,#e8f1f8,#e6f4ee 55%,#f8f0df); color: #286b61; font-size: 2rem; font-weight: 800; }
 .team-member-grid .eyebrow { margin: 0 0 7px; color: #577b9d; font-size: .62rem; }
 .team-member-grid h3 { margin: 5px 0 0; color: var(--forest); font-size: 1.05rem; }
@@ -184,7 +184,7 @@ img { max-width: 100%; }
   .gallery-items { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .gallery-item img { height: 150px; }
   .team-page-feature { height: 250px; }
-  .team-member-photo,.team-member-photo-placeholder { height: 260px; }
+  
   .cta-inner { align-items: flex-start; flex-direction: column; }
   .form-card { padding: 18px; }
 }
