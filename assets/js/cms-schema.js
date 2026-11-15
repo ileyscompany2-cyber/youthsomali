@@ -5,5 +5,6 @@ export const collectionFields = {
   events: { title: 'Event title', description: 'Description', image: 'Event image', date: 'Date (or To be announced)', location: 'Location', published: 'Published' },
   gallery: { caption: 'Caption', alt: 'Image description', image: 'Image', group: 'Gallery group' },
   team: { name: 'Full name', position: 'Position', image: 'Profile photo' },
+  social: { label: 'Platform name (Facebook, Instagram, LinkedIn, etc.)', href: 'Profile URL (https://...)', published: 'Show in footer' },
   navigation: { label: 'Link text', href: 'Link destination' }
 };

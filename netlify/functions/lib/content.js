@@ -27,6 +27,7 @@ export function validateContent(data) {
           const value = record[field];
           if (field === 'published' ? typeof value !== 'boolean' : typeof value !== 'string' || value.length > (field === 'description' ? 20000 : 1000)) throw Object.assign(new Error('Invalid record field: ' + field), { status: 400 });
           if (field === 'image' && !imagePath(value)) throw Object.assign(new Error('Invalid image path'), { status: 400 });
+          if (key === 'social' && field === 'href' && (!safeLink(value) || !value.startsWith('https://') || !URL.canParse(value))) throw Object.assign(new Error('Use a valid HTTPS social media profile URL'), { status: 400 });
           if (field === 'href' && !safeLink(value)) throw Object.assign(new Error('Use an HTTPS, local or section link'), { status: 400 });
         }
       }

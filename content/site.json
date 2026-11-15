@@ -481,6 +481,38 @@
         "image": "assets/images/aniso-hussein-ali.jpeg"
       }
     ],
+    "social": [
+  {
+    "id": "social_0",
+    "label": "Facebook",
+    "href": "https://www.facebook.com/share/1Ed7aCSGHh/",
+    "published": true
+  },
+  {
+    "id": "social_1",
+    "label": "Instagram",
+    "href": "https://www.instagram.com/ibrahimadenali770/",
+    "published": true
+  },
+  {
+    "id": "social_2",
+    "label": "TikTok",
+    "href": "https://www.tiktok.com/@ibrahimadenali770gmail.c",
+    "published": true
+  },
+  {
+    "id": "social_3",
+    "label": "LinkedIn",
+    "href": "https://www.linkedin.com/in/ibrahim-aden-ali-75747a143/",
+    "published": true
+  },
+  {
+    "id": "social_4",
+    "label": "WhatsApp",
+    "href": "https://wa.me/252612029321",
+    "published": true
+  }
+],
     "navigation": [
       {
         "label": "About",

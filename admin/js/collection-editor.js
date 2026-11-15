@@ -4,7 +4,7 @@ export function collectionEditor(key, data, { changed, upload, error }) {
   const records = data.collections[key] ||= [];
   const host=node('section');host.className='collection-manager editor-card';
   function render() {
-    host.replaceChildren(node('h2',key === 'navigation' ? 'Navigation links' : 'Manage '+key),node('p','Add, edit, reorder or remove entries, then preview and publish your changes.'));
+    host.replaceChildren(node('h2',key === 'social' ? 'Social media - footer' : key === 'navigation' ? 'Navigation links' : 'Manage '+key),node('p','Add, edit, reorder or remove entries, then preview and publish your changes.'));
     records.forEach((record,index) => {
       const card=node('article');card.className='cms-record';
       card.append(node('h3',`${index+1}. ${record.title || record.name || record.caption || record.label || 'New entry'}`));
@@ -27,7 +27,7 @@ export function collectionEditor(key, data, { changed, upload, error }) {
       for (const [text,offset] of [['Move up',-1],['Move down',1]]) {const button=node('button',text);button.disabled=index+offset<0||index+offset>=records.length;button.addEventListener('click',()=>{[records[index],records[index+offset]]=[records[index+offset],records[index]];changed();render();});actions.append(button);}
       const remove=node('button','Delete entry');remove.className='cms-delete';remove.addEventListener('click',()=>{if(!confirm('Remove this entry from the website? Publish to apply the removal.'))return;records.splice(index,1);changed();render();});actions.append(remove);card.append(actions);host.append(card);
     });
-    const add=node('button','+ Add '+(key==='navigation'?'navigation link':'entry'));add.className='primary';add.addEventListener('click',()=>{const record={id:'record_'+crypto.randomUUID()};for(const field of Object.keys(collectionFields[key]))record[field]=field==='published'?false:field==='image'?'assets/images/ypp-logo.png':field==='href'?'#home':'';records.push(record);changed();render();});host.append(add);
+    const add=node('button','+ Add '+(key==='navigation'?'navigation link':'entry'));add.className='primary';add.addEventListener('click',()=>{const record={id:'record_'+crypto.randomUUID()};for(const field of Object.keys(collectionFields[key]))record[field]=field==='published'?false:field==='image'?'assets/images/ypp-logo.png':field==='href'?(key==='social'?'https://':'#home'):'';records.push(record);changed();render();});host.append(add);
   }
   render();return host;
 }

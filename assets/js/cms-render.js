@@ -1,5 +1,6 @@
 import { imagePath, safeLink } from './cms-schema.js';
 import { setImageSource } from './responsive-image.js';
+const socialIcons = new Map(Array.from(document.querySelectorAll('.footer-social a')).map(link => [new URL(link.href).hostname.replace(/^www\./, ''), link.querySelector('svg')?.cloneNode(true)]));
 const make = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined) node.textContent = text; return node; };
 function image(path, alt, className) { const img = make('img', className); if (imagePath(path)) setImageSource(img,path); img.alt = alt || ''; img.loading = 'lazy'; return img; }
 export function renderCollections(data) {
@@ -26,6 +27,21 @@ export function renderCollections(data) {
   if (Array.isArray(c.gallery)) {
     const host = document.querySelector('#gallery .gallery-groups'); host.replaceChildren(); const groups = new Map();
     for (const record of c.gallery) { const name = record.group || 'YPP and the community'; if (!groups.has(name)) { const group = make('div','gallery-group'), grid = make('div','gallery-items'); group.append(make('h3','',name),grid); host.append(group); groups.set(name,grid); } const link = make('a','gallery-item'); if (imagePath(record.image)) link.href='/' + record.image; link.target='_blank';link.rel='noopener'; link.append(image(record.image,record.alt),make('span','',record.caption)); groups.get(name).append(link); }
+  }
+  if (Array.isArray(c.social)) {
+    const host = document.querySelector('.footer-social');
+    if (host) {
+      host.replaceChildren();
+      for (const record of c.social) {
+        if (!record.published || !safeLink(record.href) || !record.href.startsWith('https://') || !URL.canParse(record.href)) continue;
+        const link = make('a'); link.href = record.href; link.target = '_blank'; link.rel = 'noopener noreferrer';
+        link.setAttribute('aria-label', record.label + ' (opens in a new tab)');
+        const icon = socialIcons.get(new URL(record.href).hostname.replace(/^www\./, ''));
+        if (icon) link.append(icon.cloneNode(true));
+        link.append(make('span', '', record.label)); host.append(link);
+      }
+      host.hidden = !host.children.length;
+    }
   }
   if (Array.isArray(c.navigation)) {
     const nav = document.querySelector('#primary-navigation'); nav.querySelectorAll('[data-managed-nav], a:not(.nav-cta):not(.admin-login-link):not(.admin-dashboard-link)').forEach(node => node.remove());

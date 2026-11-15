@@ -66,6 +66,11 @@ function render() {
   const add = element('button', 'Add text entry'); add.addEventListener('click', () => { rows.push({ id: `entry_${crypto.randomUUID()}`, type: 'article', label: 'New entry', value: '' }); markDirty(); render(); }); if(current !== 'settings')actions.append(add);
   if (current !== 'settings') { const addImage = element('button', 'Add image'); addImage.addEventListener('click', () => { rows.push({ id: `image_${crypto.randomUUID()}`, type: 'image', label: 'New image', value: 'assets/images/ypp-logo.png' }); markDirty(); render(); }); actions.append(addImage); }
   card.append(actions); $('editor').append(card);
+  if (current === 'settings') {
+    documentData.collections ||= {};
+    documentData.collections.social ||= [];
+    $('editor').append(collectionEditor('social',documentData,{changed:markDirty,upload:uploadFile,error:fail}));
+  }
   const key=current==='settings'?'navigation':current;
   if(documentData.collections && Object.hasOwn(documentData.collections,key)) $('editor').append(collectionEditor(key,documentData,{changed:markDirty,upload:uploadFile,error:fail}));
 }
