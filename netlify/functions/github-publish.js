@@ -8,5 +8,5 @@ export const handler = endpoint('POST', async event => {
   const content = validateContent(body?.content);
   if (!/^[a-f0-9]{40}$/.test(body.sha || '')) return json(400, { error: 'Reload content before publishing' });
   const result = await github('contents/content/site.json', 'PUT', { message: 'Update website content from YPP admin', branch: branch(), sha: body.sha, content: Buffer.from(JSON.stringify(content, null, 2) + '\n').toString('base64') });
-  return json(200, { sha: result.content.sha, commit: result.commit.sha, message: 'Committed to GitHub. Netlify deployment is queued; check Netlify for completion.' });
+  return json(200, { sha: result.content.sha, commit: result.commit.sha, message: 'Committed to GitHub. A new deployment is queued and the site will update in a minute or two.' });
 });

@@ -29,7 +29,7 @@ Existing static website with an Auth0 administrator portal and protected GitHub 
 Create an Auth0 **Regular Web Application** using RS256 signing, Authorization Code grant and **POST** token endpoint authentication (client secret in request body). Record the tenant hostname, client ID and client secret. For your exact HTTPS production origin, register the Allowed Callback URL:
 
 ```
-https://your-site.netlify.app/.netlify/functions/auth-callback
+https://www.youthpp.org/api/auth-callback
 ```
 
 Use **Universal Login** for email/password required-field and format validation, show/hide password, keyboard access, loading and provider error messages. Password entry deliberately stays on the maintained identity provider. Brand that page with the YPP logo/colors. Disable public signup, provision administrators, require verified emails and enable MFA, brute-force protection, suspicious IP throttling and bot protection as supported by your Auth0 plan. Test tenant protection settings; site code cannot enable those policies.

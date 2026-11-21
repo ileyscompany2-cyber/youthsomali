@@ -67,8 +67,8 @@ const server = http.createServer(async (req, res) => {
     // Exact Host checking blocks DNS rebinding against this loopback-only development server.
     if (req.headers.host === `localhost:${port}` && ['GET','HEAD'].includes(req.method)) { res.writeHead(302, { Location: origin + new URL(req.url, origin).pathname + new URL(req.url, origin).search, 'Cache-Control': 'no-store' }); return res.end(); }
     if (req.headers.host !== `127.0.0.1:${port}`) fail(403, `Use ${origin}`);
-    const url = new URL(req.url, origin), name = url.pathname.replace('/.netlify/functions/', '');
-    if (url.pathname.startsWith('/.netlify/functions/')) {
+    const url = new URL(req.url, origin), name = url.pathname.replace(/^\/(?:\.netlify\/functions|api)\//, '');
+    if (/^\/(?:\.netlify\/functions|api)\//.test(url.pathname)) {
       const methods = { 'local-info': 'GET', 'local-login': 'POST', 'local-users': 'GET', 'local-users-save': 'POST', 'auth-session': 'GET', 'auth-logout': 'POST', 'github-content': 'GET', 'github-publish': 'POST', 'github-upload': 'POST' };
       if (!methods[name]) fail(404, 'This function is not available on the local server.');
       if (req.method !== methods[name]) return reply(res, 405, { error: 'Method not allowed' }, { Allow: methods[name] });
