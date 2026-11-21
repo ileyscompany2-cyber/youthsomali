@@ -47,7 +47,7 @@ document.querySelector('#login-form').addEventListener('submit', async event => 
     return;
   }
   label.textContent = 'Opening secure sign-in...';
-  location.assign(`/.netlify/functions/auth-start?remember=${document.querySelector('#remember').checked ? '1' : '0'}`);
+  location.assign(`/api/auth-start?remember=${document.querySelector('#remember').checked ? '1' : '0'}`);
 });
 // Restore controls after returning from the provider through browser history.
 addEventListener('pageshow', () => {
