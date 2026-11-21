@@ -3,6 +3,12 @@
   "framework": null,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/.netlify/functions/:fn", "destination": "/api/:fn" }
+  ],
+  "redirects": [
+    { "source": "/:path*", "has": [{ "type": "host", "value": "youthpp.org" }], "destination": "https://www.youthpp.org/:path*", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",
