@@ -14,7 +14,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Start-Local.ps1
 5. Ku gal email/password-kii aad terminal-ka ku dooratay. Waxaa kuu furmaya dashboard-ka.
 6. Wax ka beddel xogta, isticmaal Preview, kadib guji **Save locally**. Bogga **http://127.0.0.1:8888/** refresh ku samee si aad natiijada u aragto.
 
-Download-ka koowaad wuxuu u baahan yahay internet si Node portable looga helo nodejs.org. Local mode uma baahna Auth0, GitHub token, npm install ama Netlify. Wuxuu isticmaalaa Node built-ins iyo content validator-ka project-ka. `npm run dev` sidoo kale wuu bilaabaa server-kan haddii npm la heli karo.
+Download-ka koowaad wuxuu u baahan yahay internet si Node portable looga helo nodejs.org. Local mode uma baahna Auth0, GitHub token, npm install ama Vercel. Wuxuu isticmaalaa Node built-ins iyo content validator-ka project-ka. `npm run dev` sidoo kale wuu bilaabaa server-kan haddii npm la heli karo.
 
 ## Xogta iyo sawirrada
 
@@ -24,13 +24,13 @@ Download-ka koowaad wuxuu u baahan yahay internet si Node portable looga helo no
 - Sawirrada waxaa lagu kaydiyaa `assets/uploads/`.
 - Save kasta wuxuu xogtii hore ku kaydiyaa `.local-backups/`. Soo celi backup aad dooratay adigoo ku koobiyeeya `content/site.json` marka server-ka la joojiyo.
 - Delete wuxuu ka saaraa entry-ga bogga marka la save-gareeyo; sawirkii repository-ga wuu sii jiraa si loo soo celin karo.
-- Waxba looma diro GitHub ama Netlify. Production-ka, isticmaal setup-ka Auth0/Netlify ee README.
+- Waxba looma diro GitHub ama Vercel. Production-ka, isticmaal setup-ka Auth0/Vercel ee README.
 
 ## Session iyo amni
 
 Server-ku wuxuu ku xiran yahay `127.0.0.1` oo keliya, mana aqbalo host kale. Local password waxaa memory-ga loogu hayaa scrypt hash. Login attempts waa xaddidan yihiin. Session cookie waa HttpOnly iyo SameSite=Strict; HTTP loopback-ka awgiis Secure flag looma isticmaalayo local mode oo keliya. Writes waxay hubiyaan session, Origin iyo CSRF token. Logout wuxuu tirtiraa session-ka server-ka. Joojinta/restart-ka server-ka waxay tirtirtaa dhammaan sessions; dooro login cusub markaad dib u bilowdo.
 
-Ha u adeegsan server-kan production ama ha ku xirin internetka. Netlify wuxuu weli isticmaalaa Auth0 iyo Secure cookies, mana isticmaalo local login-kan. Faylasha local server-ka laguma daro public build-ka.
+Ha u adeegsan server-kan production ama ha ku xirin internetka. Vercel wuxuu weli isticmaalaa Auth0 iyo Secure cookies, mana isticmaalo local login-kan. Faylasha local server-ka laguma daro public build-ka.
 
 ## Cilad-bixin
 

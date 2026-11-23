@@ -3,7 +3,7 @@ const element = (tag, text) => { const node=document.createElement(tag); if(text
 
 export function usersPanel(session) {
   const host=element('section');host.className='editor-card';host.append(element('h2','Users'));
-  if(!session.local){host.append(element('p','Production accounts are managed in Auth0. Add verified Auth0 user IDs to ADMIN_SUBJECTS in Netlify and redeploy to grant access. Local accounts are never uploaded or used for production authentication.'));return host;}
+  if(!session.local){host.append(element('p','Production accounts are managed in Auth0. Add verified Auth0 user IDs to ADMIN_SUBJECTS in the Vercel project Production environment, then redeploy to grant access. Local accounts are never uploaded or used for production authentication.'));return host;}
   if(session.role!=='admin'){host.append(element('p','Only administrators can manage users.'));return host;}
   const notice=element('p');notice.setAttribute('role','status');host.append(element('p','Manage local accounts. Changes take effect immediately. Admins manage accounts and content; editors manage content only.'),notice);
   const list=element('div');host.append(list);

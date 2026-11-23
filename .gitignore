@@ -9,7 +9,6 @@ coverage/
 /uploads/
 *.log
 dist/
-.netlify/
 .local-backups/
 *.local-tmp
 .tools/

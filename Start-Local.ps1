@@ -57,7 +57,7 @@ try {
     if ($Test) {
         & $nodeExecutable --test tests/local-server.test.mjs
     } else {
-        Write-Host 'Choose your local login below. This does not connect to GitHub or Netlify.'
+        Write-Host 'Choose your local login below. This does not connect to GitHub or Vercel.'
         & $nodeExecutable scripts/local-server.mjs
     }
     if ($LASTEXITCODE -ne 0) { throw ('Local command exited with code ' + $LASTEXITCODE) }
