@@ -6,7 +6,7 @@ export async function handler(event) {
   try {
     const c = config(), q = event.queryStringParameters || {}, flow = await open(readCookie(event, 'flow'), 'flow');
     if (!equal(flow.state, q.state) || !q.code || q.error) throw new Error('Invalid callback');
-    const response = await fetch(new URL('oauth/token', c.issuer), { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ grant_type: 'authorization_code', code: q.code, code_verifier: flow.verifier, client_id: c.client, client_secret: c.secret, redirect_uri: `${c.origin}/.netlify/functions/auth-callback` }), signal: AbortSignal.timeout(10000) });
+    const response = await fetch(new URL('oauth/token', c.issuer), { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ grant_type: 'authorization_code', code: q.code, code_verifier: flow.verifier, client_id: c.client, client_secret: c.secret, redirect_uri: `${c.origin}/api/auth-callback` }), signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw new Error('Token exchange failed');
     const tokens = await response.json();
     const { payload } = await jwtVerify(tokens.id_token, createRemoteJWKSet(new URL('.well-known/jwks.json', c.issuer)), { issuer: c.issuer, audience: c.client, algorithms: ['RS256'], maxTokenAge: '10m', requiredClaims: ['sub', 'exp', 'iat', 'nonce'] });

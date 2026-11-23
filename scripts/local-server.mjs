@@ -1,4 +1,4 @@
-// Local development only. Never included in the Netlify publish directory.
+// Local development only. Never included in the Vercel static output.
 import http from 'node:http';
 import { readFile, writeFile, mkdir, rename, realpath } from 'node:fs/promises';
 import { resolve, dirname, extname, sep } from 'node:path';
@@ -6,9 +6,9 @@ import { fileURLToPath } from 'node:url';
 import { randomBytes, randomUUID, createHash } from 'node:crypto';
 import { createInterface } from 'node:readline/promises';
 import { Writable } from 'node:stream';
-import { validateContent } from '../netlify/functions/lib/content.js';
+import { validateContent } from '../server/functions/lib/content.js';
 import { createUserStore } from './local-users.mjs';
-import { validateImage } from '../netlify/functions/lib/image.js';
+import { validateImage } from '../server/functions/lib/image.js';
 
 // Derive paths from this file, never from user-provided request paths or the shell cwd.
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -30,7 +30,7 @@ if (!email || !password) {
 }
 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || '') || (password || '').length < 12) throw new Error('Use a valid email and password of at least 12 characters. Restart to try again.');
 // Keep only a salted password hash in memory. Restarting discards credentials/sessions.
-// Production authentication is handled separately by Auth0 in Netlify Functions.
+// Production authentication is handled separately by Auth0 in Vercel Functions.
 const users = await createUserStore(root, email, password);
 delete process.env.LOCAL_ADMIN_PASSWORD; password = undefined;
 const sessions = new Map(), attempts = new Map();
@@ -67,8 +67,8 @@ const server = http.createServer(async (req, res) => {
     // Exact Host checking blocks DNS rebinding against this loopback-only development server.
     if (req.headers.host === `localhost:${port}` && ['GET','HEAD'].includes(req.method)) { res.writeHead(302, { Location: origin + new URL(req.url, origin).pathname + new URL(req.url, origin).search, 'Cache-Control': 'no-store' }); return res.end(); }
     if (req.headers.host !== `127.0.0.1:${port}`) fail(403, `Use ${origin}`);
-    const url = new URL(req.url, origin), name = url.pathname.replace('/.netlify/functions/', '');
-    if (url.pathname.startsWith('/.netlify/functions/')) {
+    const url = new URL(req.url, origin), name = url.pathname.replace('/api/', '');
+    if (url.pathname.startsWith('/api/')) {
       const methods = { 'local-info': 'GET', 'local-login': 'POST', 'local-users': 'GET', 'local-users-save': 'POST', 'auth-session': 'GET', 'auth-logout': 'POST', 'github-content': 'GET', 'github-publish': 'POST', 'github-upload': 'POST' };
       if (!methods[name]) fail(404, 'This function is not available on the local server.');
       if (req.method !== methods[name]) return reply(res, 405, { error: 'Method not allowed' }, { Allow: methods[name] });
@@ -111,7 +111,7 @@ const server = http.createServer(async (req, res) => {
           await mkdir(resolve(root, '.local-backups'), { recursive: true });
           await writeFile(resolve(root, '.local-backups', `${Date.now()}-${randomUUID()}.json`), before);
           const temporary = path + '.local-tmp'; await writeFile(temporary, bytes); await rename(temporary, path);
-          return { sha: digest(bytes), commit: digest(bytes), message: 'Saved to content/site.json on this computer. Refresh the local website to see your changes. Nothing was published to GitHub or Netlify.' };
+          return { sha: digest(bytes), commit: digest(bytes), message: 'Saved to content/site.json on this computer. Refresh the local website to see your changes. Nothing was published to GitHub or Vercel.' };
         });
         return reply(res, 200, result);
       }

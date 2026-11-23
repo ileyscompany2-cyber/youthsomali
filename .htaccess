@@ -4,7 +4,7 @@ DirectoryIndex index.html
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    RewriteRule ^(php|database|scripts|src|Testimonials|uploads|node_modules|vendor|netlify|tests|\.tools|\.local-backups|\.netlify|\.next)(/|$) - [F,L,NC]
+    RewriteRule ^(php|database|scripts|src|Testimonials|uploads|node_modules|vendor|api|server|tests|\.tools|\.local-backups|\.next)(/|$) - [F,L,NC]
     RewriteRule ^\.env(\..*)?$ - [F,L,NC]
     RewriteRule ^\.git(/|$) - [F,L,NC]
     RewriteRule ^(database\.sql|composer\.(json|lock)|router\.php)$ - [F,L,NC]

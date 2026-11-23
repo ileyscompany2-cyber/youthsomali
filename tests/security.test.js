@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { seal, open, cookie, readCookie, session, equal } from '../netlify/functions/lib/security.js';
-import { validateContent } from '../netlify/functions/lib/content.js';
-import { handler as publish } from '../netlify/functions/github-publish.js';
-import { handler as start } from '../netlify/functions/auth-start.js';
-import { handler as callback } from '../netlify/functions/auth-callback.js';
+import { seal, open, cookie, readCookie, session, equal } from '../server/functions/lib/security.js';
+import { validateContent } from '../server/functions/lib/content.js';
+import { handler as publish } from '../server/functions/github-publish.js';
+import { handler as start } from '../server/functions/auth-start.js';
+import { handler as callback } from '../server/functions/auth-callback.js';
+import { handler as logout } from '../server/functions/auth-logout.js';
 import { imagePath, safeLink } from '../assets/js/cms-schema.js';
 import { readFile } from 'node:fs/promises';
 process.env.SITE_ORIGIN = 'https://example.com'; process.env.AUTH0_DOMAIN = 'test.auth0.com'; process.env.AUTH0_CLIENT_ID = 'test'; process.env.AUTH0_CLIENT_SECRET = 'test'; process.env.SESSION_SECRET = 'ab'.repeat(32); process.env.ADMIN_SUBJECTS = 'auth0|admin';
@@ -19,10 +20,24 @@ test('sign-in uses PKCE and a protected flow cookie', async () => {
   assert.equal(result.statusCode, 302);
   const url = new URL(result.headers.Location);
   assert.equal(url.origin, 'https://test.auth0.com');
+  assert.equal(url.searchParams.get('redirect_uri'), 'https://example.com/api/auth-callback');
   assert.equal(url.searchParams.get('code_challenge_method'), 'S256');
   assert.equal(url.searchParams.get('max_age'), '0');
   assert.match(result.multiValueHeaders['Set-Cookie'][0], /__Host-flow=.*Secure; HttpOnly; SameSite=Lax; Max-Age=600/);
 });
+test('logout clears app cookies and redirects through Auth0 to the canonical origin', async () => {
+  const token = await seal({ sub: 'auth0|admin', csrf: 'logout-token' }, 60, 'session');
+  const result = await logout({ httpMethod: 'POST', headers: { cookie: `__Host-session=${token}`, origin: process.env.SITE_ORIGIN, 'x-csrf-token': 'logout-token' } });
+  assert.equal(result.statusCode, 200);
+  const body = JSON.parse(result.body);
+  const url = new URL(body.logoutUrl);
+  assert.equal(url.origin, 'https://test.auth0.com');
+  assert.equal(url.pathname, '/v2/logout');
+  assert.equal(url.searchParams.get('client_id'), 'test');
+  assert.equal(url.searchParams.get('returnTo'), 'https://example.com');
+  assert.equal(result.multiValueHeaders['Set-Cookie'].length, 2);
+});
+
 test('callback refuses missing browser flow without making a token exchange', async () => {
   const result = await callback({ httpMethod: 'GET', headers: {}, queryStringParameters: { state: 'forged', code: 'forged' } });
   assert.equal(result.headers.Location, '/admin/login.html?error=signin');

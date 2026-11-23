@@ -1,117 +1,99 @@
-# YPP website technical audit
+# Production-readiness audit — Vercel
 
-Audit date: 10 November 2026 (Africa/Nairobi). Scope: the local website, admin portal, Node backend, JSON storage, media, authentication, production source and Netlify configuration. No GitHub push or Netlify deployment was performed. No production credentials were requested or inserted.
+Audit date: 23 November 2026
+Repository: `ileyscompany2-cyber/youthsomali`
+Vercel project: `youthsomali-tc` (`prj_UPvXkeHmbDMXiq2exb6PDeBtk79M`)
+Canonical site: `https://www.youthpp.org`
 
-Execution environment: Windows, Node.js v26.13.0, installed Edge and Chrome in headless mode. The Node 22 Netlify runtime was not directly executed. Windows terminal PATH needed the installed Node directory for direct npm commands; the provided launcher already detects standard installation paths.
+## Executive status
 
-## Verified assessment
+The public site is deployed and reachable on Vercel. The latest inspected Production deployment was **Ready**, served both configured domains, and used `npm run build`, `dist`, and Node.js 26.x. The apex domain redirects to `www` with HTTP 308. No domain, DNS, Auth0, production environment, or Production deployment settings were changed during this audit.
 
-The core local CMS is ready for continued local use based on the checks below. The result is **not a certification that the application is completely secure**, a full WCAG conformance assessment, or a completed production deployment.
+The reported failure is the admin backend, not the public root page: live checks returned 200 for `/` and `/admin/login.html`, but 404 for both the old `/.netlify/functions/auth-session` path and the not-yet-deployed `/api/auth-session` path. The repository previously had Netlify Functions and Netlify routing, which a Vercel static deployment does not execute. This change migrates those handlers to Vercel Node.js Functions under `api/`, changes the browser calls to `/api/*`, and preserves the existing static build. The migration now has a Ready Vercel Preview for PR #3. On that Preview, the public root and admin login HTML return 200; all seven API routes resolve, Auth0 start/callback return controlled redirects, and unauthenticated session, logout, and GitHub operations are rejected with 401. Production is unchanged until the branch is merged and a Production deployment runs.
 
-- **PASS:** 28 automated Node tests, production build, JavaScript syntax checks, clean dependency installation from the lockfile, and npm's production dependency advisory check (zero reported vulnerabilities).
-- **PASS:** 54 browser workflow checks in Edge, 14 supplemental checks across installed Edge/Chrome and photographic-size analysis, seven final keyboard/navigation/draft controls checks, one self-edit reauthentication check, and three news/project/page-entry CRUD checks. These counts include navigation/rendering checks and should not be interpreted as independent security tests.
-- **PASS:** ten CSS files parsed; six axe accessibility scans of public/login/dashboard/editor states reported zero violations after fixes. Some image-background contrast checks remain incomplete and need human assessment.
-- **PASS:** all three HTML documents parsed without parser errors; 58 local HTML references resolved; no duplicate HTML IDs or invalid project JSON were found. The source inventory was 262 files before this report was added.
-- **PASS:** 182 original JPEG/PNG images decoded without errors. All original media is retained. Responsive derivatives were generated for eight referenced photographs, reducing their combined 1600px-file budget from 11,637,181 to 2,211,367 bytes (81%). This is a file-size comparison, not a Lighthouse score or real-user speed estimate.
-- **NEEDS CONFIGURATION:** production Auth0 tenant settings, verified administrator subjects, GitHub token/permissions, canonical HTTPS origin and Netlify deployment settings.
+## Root causes and remediation
 
-Browser mutations used disposable project copies with generated test credentials. They did not overwrite the real `content/site.json`, create real local user accounts, or delete original media. Temporary audit servers were stopped after testing. The existing local server is separate from those fixtures.
-
-Final SHA-256 comparison against the initial audit snapshot checked 183 files (`content/site.json` and all 182 original images): zero changed files. A generated 2×2 WebP fixture also passed the shared upload validator. The existing local server was restarted on port 8888 with the updated implementation; existing browser sessions must sign in again.
-
-## Issue register and fixes
-
-| No. | Component | Issue found / root cause | Severity | Fix applied | Test result |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Homepage contrast | The photograph could paint over the hero gradient because the overlay had no explicit stacking order. | Medium | Put the gradient above the photo and the content above the gradient; retained the existing photo and forest-green/gold palette. | PASS — screenshot reviewed; browser rendering and accessibility checks completed. Text over photographs still requires human judgment. |
-| 2 | Homepage layout | Hero content used a full-width container while other sections were constrained. Facts text overflowed at 320px. | Medium | Restored the shared container width; allowed facts/long managed text to wrap. | PASS — no horizontal overflow at 320, 390, 768 and 1440px. |
-| 3 | Mobile navigation | JSON-created links only reset `aria-expanded`; the button continued to be named “Close menu.” | Medium | One delegated navigation handler now closes original and generated links and restores the label. Added Escape-to-close/focus behavior. | PASS — managed Programs link and newly created custom navigation link close the menu with the correct accessible state. |
-| 4 | Login accessibility | The requested visual heading removal also removed the page's H1. | Low | Added an invisible descriptive H1 without restoring the removed visible copy. | PASS — one accessible H1; login axe scans pass in light/dark modes. |
-| 5 | Admin presentation | Bootstrap, icons and DM Sans relied on CDN requests; the audit browser reported network-access failures. | Medium | Bundled existing Bootstrap 5.3.3 CSS, Bootstrap Icons 1.11.3/font files and DM Sans Latin variable font locally, retaining licenses. | PASS — subsequent full workflow run had no failed network requests; no external presentation asset dependency. |
-| 6 | Small text / dark mode | Eyebrows and team positions narrowly missed 4.5:1; some admin text and dark action buttons had insufficient contrast. | Medium | Adjusted secondary text shades and separated dark accent-label color from button background color. Core brand colors remain `#123D35` and `#D9A441`. | PASS — six subsequent axe scans report no violations, with image-background contrast items still requiring manual review. |
-| 7 | Local URLs | The server rejected `localhost`, had no `/admin/` route, and `npm run dev` did not use the requested port. | Medium | Safe GET/HEAD requests on localhost redirect to the same-port 127.0.0.1 canonical origin; `/admin/` and `/admin` redirect to the dashboard; npm dev selects port 3000. | PASS — homepage, login and admin-directory flows tested through `http://localhost:3000`; anonymous dashboard navigation reaches login. |
-| 8 | Login rate limiting | Attempt counters were reserved after awaiting the body, permitting a group of concurrent requests to pass the initial limit check. | High | Reserve attempts before awaiting request input. | PASS — parallel invalid attempts trigger 429 and do not exceed the permitted failed-attempt count. |
-| 9 | Upload validation | Files were accepted from magic bytes alone, including truncated/disguised content. | High | Shared local/Netlify structural PNG/JPEG/WebP validation, canonical base64 checks, size checks, dimensions and a 40-megapixel cap. | PASS — valid PNG/JPEG, UI image replacements and multiple uploads work; truncated/disguised/oversized/excess-dimension fixtures are rejected. Full decoding/malware scanning is not implemented. |
-| 10 | Oversized requests | Throwing inside the stream iterator could close the socket before a useful response. | Medium | Drain oversized requests without buffering them; respond 413. Bound request/header timeouts. | PASS — an oversized content write receives HTTP 413. |
-| 11 | JSON validation | Unknown document/entry keys could accidentally publish unexpected metadata. | Medium | Reject unknown root and entry keys in addition to existing record/path validation. | PASS — document/entry secret-field fixtures and invalid structured records are rejected. |
-| 12 | Program statistics | The facts strip said seven programs while six cards existed. | Low | Compute the facts count from program records; the dashboard displays a read-only derived count. | PASS — displayed count matches the seeded six-card collection; browser CRUD renders additional/removal records correctly. |
-| 13 | Users editor | Editing the current account revokes its session, leaving the refresh request unauthorized. | Low | Users-panel refresh now returns to login on HTTP 401. | PASS — a browser test updated the currently signed-in secondary administrator and verified return to login; role and revocation API tests also pass. |
-| 14 | Security headers | The local responses lacked CSP; production image previews needed blob URLs. | Medium | Added self-hosted CSP, nosniff, frame protection and referrer policy locally; production static CSP permits self/data/blob images and local fonts/styles only. | PASS — local headers checked; real browser preview/upload flows work with normal CSP. Netlify's deployed behavior needs production verification. |
-| 15 | Apache fallback | Optional root hosting rules did not explicitly protect local account state and tool folders. | High if the source root is served by Apache | Deny dotfiles, tools, backups, backend/tests and local/config source. | NOT TESTED — rules inspected but Apache is unavailable. Node denial routes and the Netlify build exclusion are tested. |
-| 16 | Page performance | Several displayed photographs were multi-megabyte originals and the hero also specified an unnecessary background image. | Medium | Added 800/1600px photographic derivatives and responsive sources, retained original gallery download links, removed duplicate hero background loading, and prioritized the hero. | PASS — original and derivative images decode; browser requests responsive derivatives. Original files were retained. |
-| 17 | Maintainability / CSP | Public menu/contact behavior was compressed into an inline script, and homepage overrides were inline. | Low | Moved readable, commented behavior to `assets/js/site.js` and preserved overrides in `assets/css/home.css`, allowing a self-only CSP. | PASS — HTML/CSS/JS parsing, keyboard login/navigation and full CMS browser flows pass. |
-| 18 | SEO | No robots policy for admin/API routes. | Low | Added `robots.txt` and admin `noindex` headers; retained existing public title/description and managed metadata. | PASS — build includes robots; admin HTML/meta and local response headers checked. A production-domain sitemap still needs configuration. |
-
-No critical exploit was demonstrated in this audit. This does not establish that no critical vulnerability exists.
-
-## Functional coverage
-
-| Component / test | Status | Evidence and limits |
+| Finding | Root cause / evidence | Remediation and status |
 | --- | --- | --- |
-| Homepage/hero/About/mission/vision/values | PASS | Original sections retained; browser edit/save/public-render tests cover hero and mission. Other mapped About fields use the same editor path. |
-| Programs | PASS | Browser create/edit/upload/reorder/save/render/delete sequence; seed validation. |
-| Events | PASS | Browser create/upload/reorder/publish/unpublish/delete; title/description controls exercised. Date/location controls render; their specific published text was not separately asserted. |
-| Team | PASS | Browser create/name/position/photo/reorder/delete with public rendering. |
-| News, projects and additional page blocks | PASS | Each module's text/image creation, text update, save, public rendering and removal was exercised in the browser. These are plain content blocks on the existing single-page website, not separate page routes or rich blog templates. |
-| Gallery | PASS | Browser caption/alt/group/image/reorder/remove-entry flows and public display. Original downloadable files remain available. |
-| Contact | PASS | Managed email updates both mailto links; phone/location mappings inspected; title/description form renders. Contact is a client mailto form, not server email delivery. |
-| Email delivery | NOT TESTED | Sending an email through a user's mail application was not attempted. No email delivery service exists in the app. |
-| Settings/navigation | PASS | Browser metadata edits, saved custom navigation link, preserved Contact YPP/admin links, and mobile selection. Footer/logo controls render and their bindings were inspected. |
-| Admin login | PASS | Invalid/valid passwords, show/hide, required browser controls, Enter-to-submit, redirect and authenticated session. |
-| Session expiry/restart/logout | PASS | Local short-expiry fixture, cookie invalidation after restart, browser/API logout, encrypted production-session expiration unit tests. |
-| Remember Me | PASS | Cookie/session lifetime implementation inspected and session cookies checked; the seven-day real-world duration was not observed over seven days. |
-| Users | PASS | Hashed credential persistence, password reset, duplicates/weak password rejection, Admin/Editor authorization, disable/delete/revocation APIs, browser create/name edit. Local users are not Auth0 production users. |
-| Media selection/preview/multiple upload/replacement | PASS | Two selected images render previews and produce different stored paths; card image replacement and public display tested. |
-| Permanent media file deletion | NOT IMPLEMENTED | Removing a gallery/card entry removes it from the website; original and unreferenced files are deliberately retained for rollback. No repository-file deletion button is advertised. |
-| Media search | NOT IMPLEMENTED | No search control exists. Image Library lists referenced images; it is not a searchable inventory of every original/unreferenced repository file. |
-| Drafts/Preview/Cancel/Reload | PASS | Drafts stay in memory; a preview tab shows unsaved text safely. Dismissing reload confirmation keeps edits; accepting restores saved content. There is no separate persistent draft store or dedicated Cancel button. |
-| Content/image persistence and manual backup restore | PASS | Isolated restart test confirms JSON and uploaded image persistence; backup contents match previous JSON and restoring the backup returns that content. Restore is a documented file operation, not a dashboard Restore button. |
-| Concurrent edits / invalid JSON content | PASS | SHA conflict returns 409; invalid fields/unsafe paths/public anonymous writes are rejected; backups precede atomic replacement. |
-| XSS / CSRF / path controls | PASS | Browser script-markup preview stays text; server checks Origin/CSRF; unknown source/private routes denied; path validators exercised. This is targeted testing, not exhaustive penetration testing. |
-| Files, links, modules, media | PASS | Three HTML documents, project JSON, local asset references, JS syntax, ten CSS parses and 182 original image decodes. Browser section anchors resolve. |
-| Edge and Chrome | PASS | Installed desktop versions used in headless mode; responsive viewport checks at 320/390/768/1440px. |
-| Literal `npm run dev` startup | PASS | Started in the disposable fixture after making Node available on PATH; homepage, login and `/admin/` returned HTTP 200 through localhost:3000. The owned npm test server was stopped afterward. |
-| Safari/Firefox/physical devices/assistive technology | NOT TESTED | Not available for this run. Desktop responsive emulation is not a substitute for these tests. |
-| Lighthouse/Core Web Vitals/production latency | NOT TESTED | No field data or Lighthouse score was generated. Local timings are not representative of hosting performance. |
-| Automatic accessibility | PASS | Six sampled axe scans have no violations after changes. Incomplete image-background contrast results, screen-reader usability and full WCAG conformance still need human testing. |
-| Dependency advisories | PASS | npm audit for the locked production dependency reports zero known advisories at audit time. This does not assess unknown vulnerabilities or certify all vendored assets. |
-| Production GitHub/Netlify/Auth0 | NEEDS CONFIGURATION | Adapter/functions/configuration code exists, but no live provider callback, GitHub write, Netlify deployment or production rollback was performed. |
-| Git history secret scan | NOT TESTED | This checkout has no `.git` history. Current source scan found no GitHub token or private-key patterns; ignored local state is excluded from builds. |
-| Sitemap/canonical public domain | NEEDS CONFIGURATION | No production domain was supplied; no invented domain or invalid relative sitemap was generated. |
+| Public-site 404 concern | Current Vercel Production deployment is Ready; `https://www.youthpp.org/` and `/admin/login.html` both return HTTP 200. The build command and output directory already match the static app. | Kept `npm run build` and `dist`; verified `dist/index.html`. No SPA fallback was added because the site is a static multi-page site and direct HTML routes already work. |
+| Admin/API 404 | The live site requested Netlify Function URLs, but Vercel did not serve the old `netlify/functions` handlers. Live `/.netlify/functions/auth-session` returns 404. | Added seven `/api/*` Vercel function entry points and a Web-standard Request/Response adapter; updated the admin client to call `/api/*`. Vercel’s local production build packages all seven functions. Deployment is still pending. |
+| Authentication configuration | Auth0 client ID, domain, and secret exist in Production, but `SITE_ORIGIN`, `SESSION_SECRET`, and `ADMIN_SUBJECTS` are absent. The code correctly refuses to create a session without them. | Updated the example and instructions; retained server-side validation, PKCE, nonce/state checks, verified-email and subject allowlisting, encrypted sessions, CSRF/Origin checks, and secure HttpOnly cookies. Full Auth0 sign-in cannot be verified until the missing values and tenant URLs are configured and the branch is deployed. |
+| GitHub publishing configuration | The production `GITHUB_TOKEN` is absent. The code already defaults to the requested repository and `main` branch and keeps the token server-side. | Added tests for the repository/branch defaults and safe GitHub error handling. Publishing remains unavailable until a repository-limited token is configured. |
+| Domain / TLS | Vercel assigns both `youthpp.org` and `www.youthpp.org` to `youthsomali-tc`; the apex redirects to `www`. HTTPS requests succeed. The registrar still supplies nameservers, while the observed DNS answers route to Vercel. | No DNS changes are indicated. Keep the registrar nameservers and their current Vercel targets unless intentionally moving DNS hosting to Vercel. |
 
-## Security boundaries that remain
+## Production configuration
 
-1. The development server intentionally uses HTTP only on loopback. Its HttpOnly/SameSite=Strict cookie omits Secure there. Production remains Auth0 + HTTPS + Secure cookies; do not expose the local server to the internet.
-2. Upload checking verifies structure/dimensions, not a complete image decoder, malware scan or PNG CRC audit. Upload access is limited to authenticated content editors and administrators, with size/pixel limits and safe MIME/CSP handling. Further hardening can re-encode uploads with a maintained image processing library.
-3. Production encrypted cookies are stateless. Browser logout clears the current cookie; a copied cookie remains usable until expiry unless the subject is removed or the session key is rotated and redeployed. Per-session central production revocation is not implemented.
-4. Local accounts are private salted hashes in `.local-users.json`, not a database and not public website content. Keep that file private and back it up separately if required. Local users do not automatically migrate to Auth0.
-5. Drafts are not persisted across browser closure. Uploading a file writes the image immediately; publishing/saving content attaches its path to the website. Deleting an entry does not physically delete the image.
-6. The provided Apache fallback rules need a real Apache test if that hosting option is ever used. The recommended production output remains Netlify's `dist` directory, which excludes all local source, credentials and backup state.
-7. Retaining every original photograph keeps the repository/build relatively large (243,896,360 bytes of original media). Responsive files reduce displayed-image transfers; they do not shrink the retained original library or its deployment artifact. No unused originals were deleted without permission.
+The latest Production environment-variable listing contained only these names (secret values were not read):
 
-## Files changed
+- Present: `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET`.
+- Required but missing: `SITE_ORIGIN`, `SESSION_SECRET`, `ADMIN_SUBJECTS`, `GITHUB_TOKEN`.
+- Optional in this code because of exact defaults: `GITHUB_OWNER=ileyscompany2-cyber`, `GITHUB_REPO=youthsomali`, `GITHUB_BRANCH=main`.
 
-- Public behavior/layout: `index.html`, `assets/css/site.css`, `assets/css/home.css`, `assets/js/site.js`, `content.js`, `cms-render.js`, `image-variants.js`, `responsive-image.js`, `robots.txt`.
-- Portal: `admin/login.html`, `admin/index.html`, `admin/css/login.css`, `polish.css`, `admin/js/dashboard.js`, `users.js`; local vendor CSS/fonts and their licenses under `assets/vendor/`.
-- Backend/config: `scripts/local-server.mjs`, shared `netlify/functions/lib/image.js`, `lib/content.js`, `github-upload.js`, `scripts/build.mjs`, `package.json`, `netlify.toml`, `.htaccess`.
-- Regression coverage: `tests/image.test.mjs`, `persistence.test.mjs`, `local-server.test.mjs`, `security.test.js`.
+Add the missing values to **Vercel → project `youthsomali-tc` → Settings → Environment Variables → Production**. `SITE_ORIGIN` must be `https://www.youthpp.org` with no trailing slash. `SESSION_SECRET` must be 64 hexadecimal characters generated from 32 cryptographically random bytes; do not commit or share it. `ADMIN_SUBJECTS` is a comma-separated list of authorized Auth0 `sub` identifiers, not email addresses; the callback also requires `email_verified=true`. Create a fine-grained GitHub token restricted to `ileyscompany2-cyber/youthsomali` with Contents read/write permission for CMS publishing; never put it in client code or chat.
 
-The content file and original photographs were not rewritten by audit tests. The optimized images are additional files, not replacements of originals.
+In the Auth0 application, set:
 
-## Reproduce the supported checks
+- Allowed Callback URL: `https://www.youthpp.org/api/auth-callback`
+- Allowed Logout URL: `https://www.youthpp.org`
+- Allowed Web Origin: `https://www.youthpp.org`
 
-```powershell
-npm ci
-npm test
-npm run build
-npm audit --omit=dev
-npm run dev
-```
+Then redeploy Production. The route names now match the Vercel entry points: `GET /api/auth-start`, `GET /api/auth-callback`, `GET /api/auth-session`, `POST /api/auth-logout`, plus the three GitHub content/publish/upload endpoints.
 
-Choose local credentials in the terminal. `npm run dev` uses port 3000 unless `LOCAL_PORT` is set. Open `http://localhost:3000/` or `/admin/login.html`; safe navigation redirects to the canonical `127.0.0.1` host for session consistency. `/admin/` is supported. `Start-Local.ps1` still uses the existing 8888 launcher workflow. `LOCAL_SESSION_SECONDS` optionally shortens local session lifetime for testing and is not used by production Functions.
+## Domain and deployment observations
 
-If `node` or `npm` is not recognized in an existing Windows terminal, reopen VS Code/the terminal after installation or use `Start-Local.ps1`, which resolves the installed runtime without relying on PATH.
+- Vercel project inspection: root directory `.`, Framework `Other`, Node.js `26.x`, Build Command `npm run build`, Output Directory `dist`.
+- Latest inspected Production deployment: Ready; its aliases included `youthpp.org`, `www.youthpp.org`, and the `git-main` project alias.
+- Vercel reports third-party nameservers (`dns1.registrar-servers.com`, `dns2.registrar-servers.com`) rather than Vercel nameservers. At audit time, DNS resolved apex A to `216.198.79.1`; `www` had a Vercel CNAME (`e84a4bd3fbf7ccb0.vercel-dns-017.com`) and Vercel A answers. Both HTTPS URLs responded. DNS changes were not made.
+- PR #3's Vercel Preview for `youthsomali-tc` is Ready and its `/api/*` endpoints were checked. GitHub also still runs `netlify/youthsws/deploy-preview`, which succeeded for this PR and produced a `youthsws.netlify.app` preview. This is a repository/provider-level Netlify integration, not a source-code setting; disconnect that Netlify site from the repository manually to meet a strict Vercel-only requirement. No Netlify settings were changed.
+- Production was not deployed or modified by this audit. Until the feature branch is merged, the live API paths remain 404.
 
-Temporary browser tooling and evidence are in ignored `.tools/qa/`: `workflows-results.json`, `supplement-results.json`, `final-smoke-results.json`, `accessibility-results.json`, `static-results.json`, `media.json` and screenshots under `evidence/`. Those files contain fixture-only results and should not be deployed. Browser scripts are local QA helpers, not production dependencies.
+## Files changed and why
 
-Before production: configure the canonical domain/Auth0/GitHub/Netlify settings in README, run staging provider and publishing checks, review token scope, and test deployment rollback. Deployment remains a separate explicitly authorized action.
+**Vercel deployment and documentation**
+
+- `vercel.json` — retains `dist`, adds response/security/cache headers, and does not introduce an SPA rewrite that could shadow APIs.
+- `package.json`, `package-lock.json` — constrain supported Node versions to `>=22 <27`, matching the verified Node 26 Vercel runtime.
+- `.env.example` — supplies the real non-secret site/repository defaults and keeps credential values clearly marked as placeholders.
+- `.gitignore` — removes the obsolete Netlify build directory entry.
+- `README.md`, `LOCAL-WORKFLOW.md`, `START-LOCAL.md` — update platform, endpoints, Auth0 URLs, environment setup, and local workflow instructions.
+- `Start-Local.ps1` — updates the local launcher's platform guidance from Netlify to Vercel.
+- `.htaccess` — replaces obsolete Netlify source exclusions with `/api` and `/server` protections for optional Apache use; Vercel does not execute this file.
+- `robots.txt` — replaces the obsolete Netlify function exclusion with `/api/`.
+- `AUDIT-REPORT.md` — replaces the stale Netlify-focused audit with the current Vercel findings and verification record.
+
+**Frontend and local development**
+
+- `admin/index.html`, `admin/js/auth.js`, `admin/js/dashboard.js`, `admin/js/login.js`, `admin/js/users.js` — switch dashboard, Auth0, and publishing calls to the Vercel `/api/*` routes and remove Netlify-specific user-facing wording.
+- `index.html` — removes the inline presentation rule that conflicted with the self-only Content Security Policy.
+- `scripts/local-server.mjs` — supports the new API route mapping for local development and regression testing.
+
+**Vercel functions and shared backend**
+
+- `api/auth-callback.js`, `api/auth-logout.js`, `api/auth-session.js`, `api/auth-start.js`, `api/github-content.js`, `api/github-publish.js`, `api/github-upload.js` — Vercel Node.js function entry points.
+- `server/vercel-handler.js` — adapts Web Requests to the existing handler contract, preserves multiple `Set-Cookie` headers, and converts responses safely.
+- `server/functions/auth-callback.js`, `server/functions/auth-logout.js`, `server/functions/auth-session.js`, `server/functions/auth-start.js`, `server/functions/github-content.js`, `server/functions/github-publish.js`, `server/functions/github-upload.js`, `server/functions/lib/content.js`, `server/functions/lib/github.js`, `server/functions/lib/image.js`, `server/functions/lib/security.js` — portable server-side handlers and shared validation/security/GitHub logic; secrets remain server-side.
+- Removed obsolete Netlify hosting files: `netlify.toml` and `netlify/functions/auth-callback.js`, `auth-logout.js`, `auth-session.js`, `auth-start.js`, `github-content.js`, `github-publish.js`, `github-upload.js`, `lib/content.js`, `lib/github.js`, `lib/image.js`, and `lib/security.js`.
+
+**Regression tests**
+
+- `tests/github.test.js`, `tests/vercel-handler.test.js` — add GitHub-default/error and Vercel request/response/cookie tests.
+- `tests/image.test.mjs`, `tests/local-server.test.mjs`, `tests/persistence.test.mjs`, `tests/security.test.js`, `tests/social.test.mjs` — update coverage for the migrated endpoints and preserve existing upload, local CMS, auth, and content-security behaviors.
+
+## Checks run
+
+| Command / check | Result |
+| --- | --- |
+| `npm ci` | Pass; installed the locked dependency set, 0 reported vulnerabilities. |
+| `npm test` | Pass; 34 tests, 34 passed, 0 failed. |
+| `npm run build` | Pass; `dist/index.html` exists. |
+| `npm audit --omit=dev` | Pass; 0 vulnerabilities reported. |
+| `vercel build --prod --project youthsomali-tc --scope team_U7WHmt7EXbuK5OZVVcWGTQAK --yes` | Pass; generated `.vercel/output` with static files and seven Node.js 26.x API function bundles. Vercel reported that three Production secret values could not be pulled and wrote `[SENSITIVE]` placeholders to the ignored local env file; no values were exposed. |
+| Local HTTP checks | Pass: `/` 200, `/admin/login.html` 200, unauthenticated `/api/auth-session` 401 as expected. |
+| Live HTTP checks | `/` 200, `/admin/login.html` 200; both old Netlify and not-yet-deployed `/api/auth-session` return 404 on the current Production deployment. |
+| Vercel PR Preview HTTP route checks | Pass: `/` and `/admin/login.html` 200; auth-start and invalid auth-callback returned controlled 302 redirects; auth-session, auth-logout, github-content, github-publish, and github-upload returned 401 for anonymous requests (not 404). No Auth0 credentials or authenticated write was exercised. |
+| GitHub PR deployment checks | Vercel Preview for `youthsomali-tc` passed. A separate `youthsomali` Vercel check passed. The repository-level Netlify `youthsws` preview also passed and remains connected. |
+| `git diff --check` | Pass; no whitespace errors. |
+| Current-source credential-pattern scan | No matching credential/private-key patterns found. Full history scan was not performed because this checkout is shallow. |
+| Browser screenshot/interactive verification of the new local preview | Not completed: the workspace browser daemon returned a resource-unavailable error. Local route checks and automated tests passed; this is not a visual or authenticated end-to-end test. |
+
+This is a JavaScript project; no TypeScript or lint script is configured. The optional Apache `.htaccess` rules were updated but not executed because Vercel ignores them. No Auth0 credentials, administrator subjects, GitHub token, DNS settings, or production deployment were changed. Production readiness still depends on adding the four missing environment variables, updating the Auth0 application URLs, merging the feature branch, verifying the new Production deployment and real Auth0/GitHub flows, and disconnecting the repository-level Netlify integration if Vercel must be the only deployment platform.

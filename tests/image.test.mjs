@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { validateImage } from '../netlify/functions/lib/image.js';
+import { validateImage } from '../server/functions/lib/image.js';
 
 test('valid PNG and existing JPEG pass shared upload validation', async () => {
   const png='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a7X8AAAAASUVORK5CYII=';
