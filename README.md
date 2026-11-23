@@ -52,10 +52,25 @@ Reference: [GitHub repository contents API](https://docs.github.com/en/rest/repo
 
 1. Install Node.js 22 or later. Run `npm install`, `npm test`, then `npm run build`. Commit the generated `package-lock.json` to pin dependencies. The resolved dependency lockfile is included.
 2. Import your GitHub repository into Netlify. Select the publishing branch. `netlify.toml` configures build command `npm run build`, publish directory `dist`, functions directory `netlify/functions`, HTTPS headers and admin CSP.
-3. Set every variable in `.env.example` through Netlify project settings, scoped to **Functions** and the production context. Do not commit a real `.env`; build assets do not need secrets.
-4. `SITE_ORIGIN` must be the exact HTTPS origin without trailing slash. `AUTH0_DOMAIN` is the tenant hostname only, without protocol/path. Match the callback registered in Auth0.
-5. Generate SESSION_SECRET with `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"`. Store the 64 hexadecimal characters privately. Do not use a placeholder.
-6. Deploy. Redeploy after environment changes. Use one canonical HTTPS domain and redirect alternate domains to it. Secure host cookies intentionally do not work over HTTP.
+3. In Netlify **Site configuration → Environment variables**, add these values for **Functions** in the **Production** context. Keep credentials server-side; do not commit a real `.env` or expose secrets to the browser.
+
+   | Variable | Purpose |
+   | --- | --- |
+   | `SITE_ORIGIN` | Canonical production HTTPS origin, with no trailing slash |
+   | `AUTH0_DOMAIN` | Auth0 tenant hostname only, without protocol or path |
+   | `AUTH0_CLIENT_ID` | Auth0 Regular Web Application client ID |
+   | `AUTH0_CLIENT_SECRET` | Auth0 Regular Web Application client secret |
+   | `SESSION_SECRET` | 64 hexadecimal characters (32 random bytes) for encrypted sessions |
+   | `ADMIN_SUBJECTS` | Comma-separated Auth0 `user_id` values allowed to administer the site |
+   | `GITHUB_TOKEN` | Fine-grained token used by the CMS publishing functions |
+   | `GITHUB_OWNER` | GitHub organization or account that owns the repository |
+   | `GITHUB_REPO` | Repository used by the CMS publishing functions |
+   | `GITHUB_BRANCH` | Branch Netlify deploys and the CMS publishes to |
+
+   `SITE_ORIGIN`, the Auth0 tenant/client values, `SESSION_SECRET`, and at least one valid `ADMIN_SUBJECTS` entry are required for administrator sign-in. GitHub variables are required for CMS publishing. Do not use the placeholder values from `.env.example`.
+4. In Auth0, set the Allowed Callback URL to `https://<your-canonical-domain>/.netlify/functions/auth-callback` and make it match `SITE_ORIGIN` exactly. `SITE_ORIGIN` must be the HTTPS origin without a trailing slash; `AUTH0_DOMAIN` is the tenant hostname only, without protocol or path.
+5. Generate `SESSION_SECRET` from 32 cryptographically random bytes and store its 64-character hexadecimal representation in Netlify. Never use a placeholder or expose this value in the browser or repository.
+6. Deploy after the required variables and Auth0 callback are configured. Redeploy after changing environment variables. Use one canonical HTTPS domain and redirect alternate domains to it. Secure host cookies intentionally do not work over HTTP.
 7. Visit `/admin/login.html`, sign in, edit, upload and publish. Verify the commit and successful Netlify deployment, then refresh the public website.
 
 Only public index/assets/photos/admin/content files are copied to dist. Functions, secrets, tests and documentation are excluded from the publish directory. Static Apache/file hosting still serves the public website, but authentication and publishing require Netlify. This project is not configured for Sites hosting.
