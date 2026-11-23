@@ -25,7 +25,7 @@ const ready = ['127.0.0.1','localhost'].includes(location.hostname)
 if (query.has('error') || query.has('expired') || query.has('logout')) {
   notice.hidden = false;
   notice.textContent = query.get('error') === 'configuration'
-    ? 'Administrator sign-in is not configured yet. Complete the Auth0 and Netlify environment setup in the project README, then redeploy.'
+    ? 'Administrator sign-in is unavailable because this deployment is missing or has invalid Auth0/Netlify configuration. Ask the site administrator to set the server-side values listed in the project README and redeploy.'
     : query.has('error') ? 'Sign-in could not be completed. Use an authorized account with a verified email, or contact your administrator.'
     : query.has('logout') ? 'You have been signed out.' : 'Your session ended. Please sign in again.';
   history.replaceState(null, '', '/admin/login.html');
